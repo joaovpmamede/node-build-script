@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+// Gruntfile generator script
+
+var fs   = require('fs');
+var path = require('path');
+
+var filename = path.join(__dirname, 'Gruntfile.js');
+var msg = '// ^^ See the output above for standard configuration ^^';
+
+fs.createReadStream(filename)
+  .on('end', console.log.bind(console, '\n' + msg + '\n'))
+  .pipe(process.stdout);

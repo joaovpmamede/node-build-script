@@ -83,10 +83,6 @@ module.exports = function(grunt) {
     }
   });
 
-  // Default task.
+  // default, aliased to build
   grunt.registerTask('default', 'lint');
-
-  // load support for tasks, not part of the plugin functionnality.
-  // This gruntfile is our dev gruntfile.
-  grunt.loadTasks('./support/');
 };

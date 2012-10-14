@@ -5,12 +5,18 @@
   "version": "0.2.3",
   "homepage": "http://h5bp.com",
   "main": "./h5bp",
-
-  "devDependencies": {
-    "mocha": "~1.0.3",
-    "mocha-gherkin": "http://nodeload.github.com/mklabs/mocha-gherkin/tarball/master"
-  },
   "scripts": {
+    "pretest": "git submodule update --init",
     "test": "node node_modules/mocha/bin/mocha test/tasks/*.js --silent"
+  },
+  "dependencies": {
+    "yeoman": "~0.9.4"
+  },
+  "devDependencies": {
+    "rimraf": "~2.0.2",
+    "mocha": "~1.6.0",
+    "mkdirp": "~0.3.4",
+    "ncp": "~0.2.6",
+    "grunt": "~0.3.16"
   }
 }
