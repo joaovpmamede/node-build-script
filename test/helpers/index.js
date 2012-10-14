@@ -47,6 +47,7 @@ helpers.run = function(cmd, options, done) {
   options.bin = options.bin || gruntpath;
 
   cmd = Array.isArray(cmd) ? cmd : cmd.split(' ');
+  // cmd.push('--help');
 
   if(!silent) console.log([
     '', '', '',
