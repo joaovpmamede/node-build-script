@@ -15,21 +15,39 @@ module.exports = function(grunt) {
 
     // concat css/**/*.css files, inline @import, output a single minified css
     css: {
-      'css/main.css': ['{%= css_dir %}/**/*.css']
+      'css/site.css': ['css/normalize.css', 'css/main.css']
+    },
+
+    min: {
+      dist: {
+        src: 'js/main.js',
+        dest: 'js/main.js'
+      }
+    },
+
+    // concat js files
+    concat: {
+      dist: {
+        src: ['js/plugins.js', 'js/main.js'],
+        dest: 'js/main.js'
+      }
     },
 
     // Renames JS/CSS to prepend a hash of their contents for easier
     // versioning
     rev: {
-      js: '{%= js_dir %}/**/*.js',
-      css: '{%= css_dir %}/**/*.css',
-      img: '{%= img_dir %}/**'
+      js: 'js/**/*.js',
+      css: 'css/**/*.css'
     },
 
     // update references in html to revved files
     usemin: {
-      html: ['**/*.html'],
-      css: ['**/*.css']
+      html: ['**/*.html']
+      // css: ['**/*.css'] not really necessary since we're not revving images
+    },
+
+    copy: {
+      '.ignore': ['css/main.css', 'css/normalize.css', 'js/plugins.js']
     },
 
     // html minification
@@ -73,18 +91,8 @@ module.exports = function(grunt) {
     test: {
       files: ['{%= test_dir %}/**/*.js']
     },{% } %}{% if (min_concat) { %}
-    concat: {
-      dist: {
-        src: ['{%= js_dir %}/plugins.js', '{%= js_dir %}/main.js'],
-        dest: '{%= js_dir %}/{%= name %}-{%= version %}.js'
-      }
-    },
-    min: {
-      dist: {
-        src: '{%= js_dir %}/{%= name %}-{%= version %}.js',
-        dest: '{%= js_dir %}/main.js'
-      }
-    },{% } %}
+
+    {% } %}
     jshint: {
       options: {
         curly: true,
@@ -127,6 +135,10 @@ module.exports = function(grunt) {
   });
   grunt.renameTask('min', '_min').registerTask('min', 'rjs');
   {% } %}
+
+  // custom task hence the name
+  // Similar to default one but managed to change some stuff in copy
+  grunt.registerTask('custom', 'clean mkdirs concat css min usemin copy');
 
   // uncomment this line if you're using the build script as a grunt plugin
   // it should be installed locally, even better if put in your package.json's

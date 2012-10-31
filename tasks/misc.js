@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('mkdirs', 'Prepares the build dirs', function() {
     var name = this.target;
-    
+
     this.requires('clean');
     this.requiresConfig(name);
 
@@ -46,11 +46,19 @@ module.exports = function(grunt) {
     });
   });
 
-  grunt.registerTask('copy', 'Copies the whole staging(intermediate/) folder to output (publish/) one', function() {
+  grunt.registerMultiTask('copy', 'Copies the whole staging(intermediate/) folder to output (publish/) one', function() {
     this.requiresConfig('staging', 'output');
+
+    // files to be included on the newly created ignore file
+    var files = this.data;
+
+    // new ignore file containing all the files to be ignored in the publish folder
+    var target = this.target;
 
     var config = grunt.config(),
       cb = this.async();
+
+    grunt.file.write(target, grunt.helper('filestring', files));
 
     // prior to run the last copy step, switch back the cwd to the original one
     // todo: far from ideal, would most likely go into other problem here
@@ -159,7 +167,14 @@ module.exports = function(grunt) {
       .on('error', error('pipe error with dir stream'))
       .on('close', error());
   });
+  
+  // creates a string from the array of files
+  grunt.registerHelper('filestring', function (files) {
+    return files.join('\n');
+  });
 
 };
+
+
 
 
